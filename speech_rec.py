@@ -13,12 +13,11 @@ from pydub.playback import play
 # import dotenv
 from dotenv import load_dotenv
 
-load_dotenv()
-
-aai_api_key = os.getenv('aai_api_key')
-
 
 def transcribe_audio(main_wav_file):
+    load_dotenv()
+    aai_api_key = os.getenv('aai_api_key')
+    aai.settings.api_key = aai_api_key
     # Set up transcriber object
     transcriber = aai.Transcriber()
     # Create Transcript of Audio File
@@ -41,7 +40,7 @@ def auto_censor_timing(transcript, exclusion_word_list):
     for timestamp_start, timestamp_end in sorted(swear_timestamps_list):
         cut_times.append(timestamp_start)
         cut_times.append(timestamp_end)
-    return (cut_times)
+    return cut_times
 
 
 def auto_gain_censor_tone(main_wav_file, censor_wav_file):
